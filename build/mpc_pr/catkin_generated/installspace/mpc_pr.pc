@@ -1,0 +1,8 @@
+prefix=/home/robot/workspaces/dagger/install
+
+Name: mpc_pr
+Description: Description of mpc_pr
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lmpc_pr
+Requires: geometry_msgs roscpp rospy std_msgs sensor_msgs
