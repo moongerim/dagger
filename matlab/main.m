@@ -1,8 +1,8 @@
 clear all;
 clc;
 close all
-cd '/home/robot/workspaces/dagger/src/Network_log/20210716_133944' 
-for i=1:99
+% cd '/home/robot/workspaces/dagger/src/Dagger/Network_log/20210716_173142' 
+for i=1:718
     filename = sprintf('%i.mat',i);
     load(filename);
     train_loss(i) = sum(losses);
@@ -10,7 +10,8 @@ end
 figure_0 = figure('Name', 'loss')
 hold on
 plot(train_loss)
-
+[ind,m] = min(train_loss)
+load('38.mat')
 len=500;
 dt = 0.05;
 figure_1 = figure('Name', 'velocities')
@@ -18,7 +19,7 @@ subplot(2,1,1);
 grid on;
 hold on;
 plot(actions(:,1));
-plot(states(:,1));
+% plot(states(:,1));
 set(gca,'XTick',0:100:100*len);
 set(gca,'XTickLabel',0:dt*100:len*100*dt);
 title("q 1 dot")
@@ -27,13 +28,13 @@ subplot(2,1,2);
 grid on;
 hold on;
 l1 = plot(actions(:,2));
-l2 = plot(states(:,2));
+% l2 = plot(states(:,2));
 set(gca,'XTick',0:100:100*len);
 set(gca,'XTickLabel',0:dt*100:len*100*dt);
 title("q 2 dot")
 
 % Construct a Legend with the data from the sub-plots
-hL = legend([l1,l2],{"NN q dot", "MPC q dot"});
+% hL = legend([l1,l2],{"NN q dot", "MPC q dot"});
 % Programatically move the Legend
 % newPosition = [0.6 0.1 0.1 0.1];
 % newUnits = 'normalized';

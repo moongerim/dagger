@@ -58,8 +58,8 @@ double * MPC_solver::solve_mpc(double input_arr[4]) {
 	double x0[] = {input_arr[0], input_arr[1]};
 	double yN[] = {input_arr[2], input_arr[3]};
 	
-	printf("current: %f, %f\n", x0[0], x0[1]);
-	printf("goal: %f, %f\n", yN[0], yN[1]);
+	// printf("current: %f, %f\n", x0[0], x0[1]);
+	// printf("goal: %f, %f\n", yN[0], yN[1]);
 
 	/* Some temporary variables. */
 	int    i, j, iter;
@@ -85,7 +85,7 @@ double * MPC_solver::solve_mpc(double input_arr[4]) {
 	real_t te = acado_toc( &t );
 	real_t KKT_val = acado_getKKT();
 
-	ROS_INFO("Time: %.3g ms; KKT = %.3e", 1e3 * te, KKT_val);
+	// ROS_INFO("Time: %.3g ms; KKT = %.3e", 1e3 * te, KKT_val);
 
 	static double joint_commands[4];
     for (i = 0; i < 2; ++i) joint_commands[i] = acadoVariables.u[i];
