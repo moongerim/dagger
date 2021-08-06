@@ -3,4 +3,4 @@
 1. roscore
 2. coppeliasim, open `testscene.ttt`
 3. rosrun mpc_pr move
-4. python environment.py
+4. python write_and_train.py
