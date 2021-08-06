@@ -99,18 +99,18 @@ int main(int argc, char **argv)
     double currentState_targetValue[4];
     double* solutions;
     answer = config_space(my_follower.joint_position[0],my_follower.joint_position[1]);
-    if (answer<1.0){
-      // If unfeasibility happens, we need to force to break the iteration
-      joint_vel_values.data.clear();
-      for (int i = 0; i < 4; i++) joint_vel_values.data.push_back(1000);
-      my_follower.SendVelocity(joint_vel_values);
-      printf("Unfeasible case\n");
-      // Then reinitiatilize the solver:
-      myMpcSolver.reinitialize();
-      printf("-------NEW EPISODE----\n");
-      sleep(1);
-    }
-    else{
+    // if (answer<1.0){
+    //   // If unfeasibility happens, we need to force to break the iteration
+    //   joint_vel_values.data.clear();
+    //   for (int i = 0; i < 4; i++) joint_vel_values.data.push_back(1000);
+    //   my_follower.SendVelocity(joint_vel_values);
+    //   printf("Unfeasible case\n");
+    //   // Then reinitiatilize the solver:
+    //   myMpcSolver.reinitialize();
+    //   printf("-------NEW EPISODE----\n");
+    //   sleep(1);
+    // }
+    // else{
       if(my_follower.flag==0){
         // If python iteration needs to reset the environment, MPC also needs to be reinitialized.
         myMpcSolver.reinitialize();
@@ -131,7 +131,7 @@ int main(int argc, char **argv)
         printf("Solutions = %f, %f\n", solutions[0], solutions[1]);
         my_follower.SendVelocity(joint_vel_values);
       }
-    }
+    // }
     ros::spinOnce();
     loop_rate.sleep();
   }

@@ -101,17 +101,6 @@ test/fast: test
 
 .PHONY : test/fast
 
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: install/local
-
-.PHONY : install/local/fast
-
 # Special rule for the target install/strip
 install/strip: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
@@ -132,6 +121,17 @@ list_install_components:
 list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: install/local
+
+.PHONY : install/local/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -241,6 +241,21 @@ sensor_msgs_generate_messages_eus/fast:
 .PHONY : sensor_msgs_generate_messages_eus/fast
 
 # Convenience name for target.
+mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
+.PHONY : mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+sensor_msgs_generate_messages_cpp: mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
+
+.PHONY : sensor_msgs_generate_messages_cpp
+
+# fast build rule for target.
+sensor_msgs_generate_messages_cpp/fast:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
+.PHONY : sensor_msgs_generate_messages_cpp/fast
+
+# Convenience name for target.
 mpc_pr/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule:
 	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
 .PHONY : mpc_pr/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
@@ -254,51 +269,6 @@ geometry_msgs_generate_messages_py: mpc_pr/CMakeFiles/geometry_msgs_generate_mes
 geometry_msgs_generate_messages_py/fast:
 	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make mpc_pr/CMakeFiles/geometry_msgs_generate_messages_py.dir/build
 .PHONY : geometry_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
-.PHONY : mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_nodejs: mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : std_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-std_msgs_generate_messages_nodejs/fast:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
-.PHONY : std_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/rule:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-.PHONY : mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_eus: mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-
-.PHONY : std_msgs_generate_messages_eus
-
-# fast build rule for target.
-std_msgs_generate_messages_eus/fast:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/build
-.PHONY : std_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/rule:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-.PHONY : mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_lisp: mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-.PHONY : roscpp_generate_messages_lisp
-
-# fast build rule for target.
-roscpp_generate_messages_lisp/fast:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/build
-.PHONY : roscpp_generate_messages_lisp/fast
 
 # Convenience name for target.
 mpc_pr/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule:
@@ -316,6 +286,51 @@ geometry_msgs_generate_messages_nodejs/fast:
 .PHONY : geometry_msgs_generate_messages_nodejs/fast
 
 # Convenience name for target.
+mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
+.PHONY : mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+std_msgs_generate_messages_lisp: mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
+
+.PHONY : std_msgs_generate_messages_lisp
+
+# fast build rule for target.
+std_msgs_generate_messages_lisp/fast:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
+.PHONY : std_msgs_generate_messages_lisp/fast
+
+# Convenience name for target.
+mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
+.PHONY : mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+geometry_msgs_generate_messages_lisp: mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
+
+.PHONY : geometry_msgs_generate_messages_lisp
+
+# fast build rule for target.
+geometry_msgs_generate_messages_lisp/fast:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build
+.PHONY : geometry_msgs_generate_messages_lisp/fast
+
+# Convenience name for target.
+mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+.PHONY : mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+rosgraph_msgs_generate_messages_nodejs: mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : rosgraph_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+rosgraph_msgs_generate_messages_nodejs/fast:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
+.PHONY : rosgraph_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
 mpc_pr/CMakeFiles/mpc_pr_package.dir/rule:
 	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/mpc_pr_package.dir/rule
 .PHONY : mpc_pr/CMakeFiles/mpc_pr_package.dir/rule
@@ -329,21 +344,6 @@ mpc_pr_package: mpc_pr/CMakeFiles/mpc_pr_package.dir/rule
 mpc_pr_package/fast:
 	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/mpc_pr_package.dir/build.make mpc_pr/CMakeFiles/mpc_pr_package.dir/build
 .PHONY : mpc_pr_package/fast
-
-# Convenience name for target.
-mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
-.PHONY : mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-sensor_msgs_generate_messages_cpp: mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : sensor_msgs_generate_messages_cpp
-
-# fast build rule for target.
-sensor_msgs_generate_messages_cpp/fast:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make mpc_pr/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
-.PHONY : sensor_msgs_generate_messages_cpp/fast
 
 # Convenience name for target.
 mpc_pr/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule:
@@ -374,6 +374,21 @@ geometry_msgs_generate_messages_cpp: mpc_pr/CMakeFiles/geometry_msgs_generate_me
 geometry_msgs_generate_messages_cpp/fast:
 	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make mpc_pr/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
 .PHONY : geometry_msgs_generate_messages_cpp/fast
+
+# Convenience name for target.
+mpc_pr/CMakeFiles/_catkin_empty_exported_target.dir/rule:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/_catkin_empty_exported_target.dir/rule
+.PHONY : mpc_pr/CMakeFiles/_catkin_empty_exported_target.dir/rule
+
+# Convenience name for target.
+_catkin_empty_exported_target: mpc_pr/CMakeFiles/_catkin_empty_exported_target.dir/rule
+
+.PHONY : _catkin_empty_exported_target
+
+# fast build rule for target.
+_catkin_empty_exported_target/fast:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/_catkin_empty_exported_target.dir/build.make mpc_pr/CMakeFiles/_catkin_empty_exported_target.dir/build
+.PHONY : _catkin_empty_exported_target/fast
 
 # Convenience name for target.
 mpc_pr/CMakeFiles/roscpp_generate_messages_cpp.dir/rule:
@@ -421,49 +436,49 @@ std_msgs_generate_messages_py/fast:
 .PHONY : std_msgs_generate_messages_py/fast
 
 # Convenience name for target.
-mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-.PHONY : mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
+mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
+.PHONY : mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
 
 # Convenience name for target.
-std_msgs_generate_messages_lisp: mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
+std_msgs_generate_messages_nodejs: mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
 
-.PHONY : std_msgs_generate_messages_lisp
+.PHONY : std_msgs_generate_messages_nodejs
 
 # fast build rule for target.
-std_msgs_generate_messages_lisp/fast:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make mpc_pr/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
-.PHONY : std_msgs_generate_messages_lisp/fast
+std_msgs_generate_messages_nodejs/fast:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make mpc_pr/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
+.PHONY : std_msgs_generate_messages_nodejs/fast
 
 # Convenience name for target.
-mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
-.PHONY : mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
+mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/rule:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
+.PHONY : mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
 
 # Convenience name for target.
-geometry_msgs_generate_messages_lisp: mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
+std_msgs_generate_messages_eus: mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
 
-.PHONY : geometry_msgs_generate_messages_lisp
+.PHONY : std_msgs_generate_messages_eus
 
 # fast build rule for target.
-geometry_msgs_generate_messages_lisp/fast:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make mpc_pr/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build
-.PHONY : geometry_msgs_generate_messages_lisp/fast
+std_msgs_generate_messages_eus/fast:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make mpc_pr/CMakeFiles/std_msgs_generate_messages_eus.dir/build
+.PHONY : std_msgs_generate_messages_eus/fast
 
 # Convenience name for target.
-mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-.PHONY : mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/rule:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f CMakeFiles/Makefile2 mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
+.PHONY : mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
 
 # Convenience name for target.
-rosgraph_msgs_generate_messages_nodejs: mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+roscpp_generate_messages_lisp: mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
 
-.PHONY : rosgraph_msgs_generate_messages_nodejs
+.PHONY : roscpp_generate_messages_lisp
 
 # fast build rule for target.
-rosgraph_msgs_generate_messages_nodejs/fast:
-	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make mpc_pr/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
-.PHONY : rosgraph_msgs_generate_messages_nodejs/fast
+roscpp_generate_messages_lisp/fast:
+	cd /home/robot/workspaces/dagger/build && $(MAKE) -f mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make mpc_pr/CMakeFiles/roscpp_generate_messages_lisp.dir/build
+.PHONY : roscpp_generate_messages_lisp/fast
 
 # Convenience name for target.
 mpc_pr/CMakeFiles/roscpp_generate_messages_eus.dir/rule:
@@ -1030,7 +1045,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test"
-	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... move"
 	@echo "... mpc_pr"
@@ -1038,21 +1052,23 @@ help:
 	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... list_install_components"
 	@echo "... sensor_msgs_generate_messages_eus"
-	@echo "... geometry_msgs_generate_messages_py"
-	@echo "... std_msgs_generate_messages_nodejs"
-	@echo "... std_msgs_generate_messages_eus"
-	@echo "... roscpp_generate_messages_lisp"
-	@echo "... geometry_msgs_generate_messages_nodejs"
-	@echo "... mpc_pr_package"
 	@echo "... sensor_msgs_generate_messages_cpp"
-	@echo "... sensor_msgs_generate_messages_nodejs"
-	@echo "... geometry_msgs_generate_messages_cpp"
-	@echo "... roscpp_generate_messages_cpp"
-	@echo "... geometry_msgs_generate_messages_eus"
-	@echo "... std_msgs_generate_messages_py"
+	@echo "... geometry_msgs_generate_messages_py"
+	@echo "... geometry_msgs_generate_messages_nodejs"
 	@echo "... std_msgs_generate_messages_lisp"
 	@echo "... geometry_msgs_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_nodejs"
+	@echo "... mpc_pr_package"
+	@echo "... sensor_msgs_generate_messages_nodejs"
+	@echo "... geometry_msgs_generate_messages_cpp"
+	@echo "... install/local"
+	@echo "... _catkin_empty_exported_target"
+	@echo "... roscpp_generate_messages_cpp"
+	@echo "... geometry_msgs_generate_messages_eus"
+	@echo "... std_msgs_generate_messages_py"
+	@echo "... std_msgs_generate_messages_nodejs"
+	@echo "... std_msgs_generate_messages_eus"
+	@echo "... roscpp_generate_messages_lisp"
 	@echo "... roscpp_generate_messages_eus"
 	@echo "... roscpp_generate_messages_py"
 	@echo "... rosgraph_msgs_generate_messages_eus"
