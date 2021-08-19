@@ -39,7 +39,7 @@ double config_space(double theta_1, double theta_2){
   double t8 = (l1*c1+7*l2*c12/8-O21)*(l1*c1+7*l2*c12/8-O21)+(l1*s1+7*l2*s12/8-O22)*(l1*s1+7*l2*s12/8-O22)-R_quad;
   
   double answer = 0.0;
-  if (x1>0 and x2>0 and t1>0 and t2>0 and t3>0 and t4>0 and t5>0 and t6>0 and t7>0 and t8>0 and abs(theta_2)<1.57){
+  if (x1>0 and x2>0 and t1>0 and t2>0 and t3>0 and t4>0 and t5>0 and t6>0 and t7>0 and t8>0){
      answer = 1.0;
   }
   return answer;
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
   while (ros::ok()){
     double currentState_targetValue[4];
     double* solutions;
-    answer = config_space(my_follower.joint_position[0],my_follower.joint_position[1]);
+    // answer = config_space(my_follower.joint_position[0],my_follower.joint_position[1]);
     // if (answer<1.0){
     //   // If unfeasibility happens, we need to force to break the iteration
     //   joint_vel_values.data.clear();
@@ -115,11 +115,12 @@ int main(int argc, char **argv)
         // If python iteration needs to reset the environment, MPC also needs to be reinitialized.
         myMpcSolver.reinitialize();
         printf("-------NEW EPISODE----\n");
-        joint_vel_values.data.clear();
-        for (int i = 0; i < 2; i++) joint_vel_values.data.push_back(0);
-        for (int i = 0; i < 2; i++) joint_vel_values.data.push_back(my_follower.joint_position[i]);
-        my_follower.SendVelocity(joint_vel_values);
-      }else{
+        // joint_vel_values.data.clear();
+        // for (int i = 0; i < 2; i++) joint_vel_values.data.push_back(0);
+        // for (int i = 0; i < 2; i++) joint_vel_values.data.push_back(my_follower.joint_position[i]);
+        // my_follower.SendVelocity(joint_vel_values);
+      }
+      // else{
         for (int i = 0; i < 2; i++){
           currentState_targetValue[i] = my_follower.joint_position[i];
           currentState_targetValue[i+2] = my_follower.goal[i];
@@ -130,7 +131,7 @@ int main(int argc, char **argv)
         for (int i = 0; i < 2; i++) joint_vel_values.data.push_back(my_follower.joint_position[i]);
         printf("Solutions = %f, %f\n", solutions[0], solutions[1]);
         my_follower.SendVelocity(joint_vel_values);
-      }
+      // }
     // }
     ros::spinOnce();
     loop_rate.sleep();

@@ -21,7 +21,6 @@ class MyModel(nn.Module):
     def __init__(self, dev):
         super().__init__()
         self.dev = dev
-        
         self.linear_1 = nn.Linear(2, 50)
         self.linear_2 = nn.Linear(50, 2)
 
@@ -51,7 +50,7 @@ class ENV:
         l1 = 0.5
         l2 = 0.4
         R_S = 0.2
-        R_quad = (l2/8+R_S)*(l2/8+R_S)
+        R_quad = (l2/8+R_S)*(l2/8+R_S)-0.001
         s1 = sin(theta_1)
         c1 = cos(theta_1)
         s12 = sin(theta_1+theta_2)
@@ -91,16 +90,17 @@ class ENV:
     def observe(self):
         return self.observation
 
-    def reset(self, theta_1=0, theta_2=0):   
+    def reset(self, theta_1=100, theta_2=100, t = 5):   
         self.init_variables(theta_1, theta_2)
+        
         # WE need some time for putting the robot on its initial position
-        time.sleep(5)
+        time.sleep(t)
         obs = self.observe()
         return obs 
     
     def init_variables(self, theta_1, theta_2):
         answer = 0
-        if theta_1==0 and theta_2==0:
+        if theta_1==100 and theta_2==100:
             while (answer<1):
                 self.init_poses[0] = random.uniform(0.0, 0.1)
                 self.init_poses[1] = random.uniform(0.0, 0.1)
@@ -125,7 +125,6 @@ def train(dev, model, x_train, y_train, optimizer, log_interval, loss_function):
     runLoss = 0
     record_loss = 0
     model.train()
-    iterator = 0
     for b in range(0, len(x_train), n_batch):
         seq_data = np.array(x_train[b:b+n_batch])
         seq_label = np.array(y_train[b:b+n_batch])
@@ -140,9 +139,8 @@ def train(dev, model, x_train, y_train, optimizer, log_interval, loss_function):
         if b % log_interval == 0:
             record_loss = single_loss.item()
             print ('Train epoch [{}/{}] loss: {:.6f}'.format(b, len(x_train), record_loss))
-        # iterator+=1
-    # runLoss = runLoss/iterator
-    return record_loss
+
+    return runLoss
 
 if __name__ == '__main__':
     rospy.init_node('listener', anonymous=True)
@@ -150,72 +148,73 @@ if __name__ == '__main__':
     model_dir = get_model_dir()
     run_name = model_dir.split('/')[1]
     episodes = 10000
-    n_batch = 50
+    n_batch = 100
     dev = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = '/weights/model_write_and_train_20210812_124157_182.pth'
     model = MyModel(dev).to(dev)
+    model.cuda()
+    model.load_state_dict(torch.load('weights/model_dagger_20210817_161811_3801.pth'))
+    # model = MyModel(dev).to(dev)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     loss_function = nn.MSELoss()
-    actions = []
-    states = []
-    losses = []
-    the_best_loss = 1e+8
+    nn_jv = []
+    real_jp = []
+    real_jv = []
     nSteps = 400
-    log_interval = 50
+    log_interval = 200
+    loss = 0
+    
+    observation = env.reset()
+    seq_label = observation[0:2]
+    seq_data = observation[2:4]
+
+    # Exploring with NN:
     for i in range(episodes):
-        t = time.time()
-        print("Episode", i, " is started")
-        actions = []
-        real_jp = []
-        real_jv = []
+        print("Episode", i+1, " is started")
         loss = 0
-        model.train()
         observation = env.reset()
         seq_label = observation[0:2]
         seq_data = observation[2:4]
-        
+        back_iter = 1
+        nSteps = 400
+        temp_jp = [[0 for c in range(2)] for r in range(nSteps)]
+        temp_jv = [[0 for c in range(2)] for r in range(nSteps)]
+        temp_nn_jv = [[0 for c in range(2)] for r in range(nSteps)]
+        t = time.time()
         for b in range(nSteps):
-            # Check feasibility:
-            if (abs(seq_label[0])>2 or abs(seq_label[1])>2):
-                break
-                # observation = env.reset(previous_state[0],previous_state[1])
-                # seq_data = observation[2:4]
-                # seq_label = observation[0:2]
-                # observation = env.step(seq_label)
+            
+            seq_data_torch = torch.tensor(seq_data, dtype=torch.float32).to(dev)
 
-            else:    
-                seq_data_torch = torch.tensor(seq_data, dtype=torch.float32).to(dev)
+            # Prediction
+            y_pred = model(seq_data_torch)
+            pred = y_pred.cpu()
+            pred = pred.detach().numpy()
 
-                # Prediction
-                y_pred = model(seq_data_torch)
-                pred = y_pred.cpu()
-                pred = pred.detach().numpy()
+            # Send action
+            observation = env.step(pred)
+            temp_nn_jv[b] = pred
+            temp_jp[b] = seq_data
+            temp_jv[b] = seq_label
 
-                # Send action
-                observation = env.step(seq_label)
-
-                # record data
-                actions.append(pred)
-                real_jp.append(seq_data)
-                real_jv.append(seq_label)
-                previous_state = seq_data
-
-                # New data collection
-                seq_data = observation[2:4]
-                seq_label = observation[0:2]
+            # New data collection
+            seq_data = observation[2:4]
+            seq_label = observation[0:2]
 
             time.sleep(0.05)
 
-        #if len(real_jp)>n_batch: 
+        for z in range(nSteps):
+            real_jp.append(temp_jp[z])
+            real_jv.append(temp_jv[z])
+            nn_jv.append(temp_nn_jv[z])
+    
         print("---Training is started---")
         loss = train(dev, model, real_jp, real_jv, optimizer, log_interval, loss_function)
         elapsed = time.time() - t
         
-        print("Episode ", i, " runloss = ", loss, ' time = ', elapsed)
-        save_log(run_name, actions, real_jp, real_jv, loss, i)
+        print("Episode ", i+1, " runloss = ", loss, ' time = ', elapsed)
+        save_log(run_name, temp_nn_jv, temp_jp, temp_jv, loss, i+1)
 
-        if i % 50 == 0:
+        if i % 100 == 0:
             if not os.path.exists('weights'):
                 os.makedirs('weights')
-            torch.save(model.state_dict(), 'weights/model_{}_{}.pth'.format(run_name, i))
-    logfile.close()
+            torch.save(model.state_dict(), 'weights/model_{}_{}.pth'.format(run_name, i+1))
+

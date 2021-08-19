@@ -1,17 +1,22 @@
 clear all;
 clc;
 close all
+iter = 1;
 % cd '/home/robot/workspaces/dagger/src/Dagger/Network_log/20210716_173142' 
-for i=1:14
+divider = 1
+for i=1:3869
     filename = sprintf('%i.mat',i);
     load(filename);
-    train_loss(i) = losses;
+    temp = loss/divider
+    divider=divider+1
+    train_loss(i) = temp;
 end
 figure_0 = figure('Name', 'loss')
 hold on
 plot(train_loss)
+
 [ind,m] = min(train_loss)
-load('329.mat')
+load('3.mat')
 len=500;
 dt = 0.05;
 figure_1 = figure('Name', 'velocities')
@@ -19,7 +24,7 @@ subplot(2,1,1);
 grid on;
 hold on;
 plot(actions(:,1));
-plot(states(:,1));
+plot(real_jv(:,1));
 set(gca,'XTick',0:100:100*len);
 set(gca,'XTickLabel',0:dt*100:len*100*dt);
 title("q 1 dot")
@@ -28,10 +33,13 @@ subplot(2,1,2);
 grid on;
 hold on;
 l1 = plot(actions(:,2));
-l2 = plot(states(:,2));
+l2 = plot(real_jv(:,2));
 set(gca,'XTick',0:100:100*len);
 set(gca,'XTickLabel',0:dt*100:len*100*dt);
 title("q 2 dot")
+legend([l1,l2],{"NN q dot", "MPC q dot"})
+figurename = sprintf('jv.png');
+saveas(figure_1, figurename);
 
 % Construct a Legend with the data from the sub-plots
 % hL = legend([l1,l2],{"NN q dot", "MPC q dot"});
@@ -43,7 +51,7 @@ figure_2 = figure('Name', 'positions')
 subplot(2,1,1);
 grid on;
 hold on;
-plot(states(:,3));
+plot(real_jp(:,1));
 set(gca,'XTick',0:100:100*len);
 set(gca,'XTickLabel',0:dt*100:len*100*dt);
 
@@ -51,11 +59,13 @@ title("q 1");
 subplot(2,1,2);
 grid on;
 hold on;
-l1 = plot(states(:,4));
+l1 = plot(real_jp(:,2));
 set(gca,'XTick',0:100:100*len);
 set(gca,'XTickLabel',0:dt*100:len*100*dt);
-
+% legend([l1],{"jp"})
 title("q 2")
+figurename = sprintf('jp.png');
+saveas(figure_2, figurename);
 %% Test sample
 test = load('test_log_pytorch_train_20210630_161504.csv')
 predicted_q_dot = test(:,1:2)

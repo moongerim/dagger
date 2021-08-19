@@ -9,7 +9,7 @@ class stream_tee(object):
     def __init__(self, stream1, stream2):
         self.stream1 = stream1
         self.stream2 = stream2
-        self.__missing_method_name = None  # Hack!
+        self.__missing_method_name = None  # Hack!f
 
     def __getattribute__(self, name):
         return object.__getattribute__(self, name)
