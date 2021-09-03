@@ -21,8 +21,8 @@ class MyModel(nn.Module):
     def __init__(self, dev):
         super().__init__()
         self.dev = dev
-        self.linear_1 = nn.Linear(2, 50)
-        self.linear_2 = nn.Linear(50, 2)
+        self.linear_1 = nn.Linear(2, 10)
+        self.linear_2 = nn.Linear(10, 2)
 
     def forward(self, x):
         x = self.linear_1(x)
@@ -152,7 +152,7 @@ if __name__ == '__main__':
     dev = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = MyModel(dev).to(dev)
     model.cuda()
-    model.load_state_dict(torch.load('weights/model_dagger_20210817_161811_3801.pth'))
+    model.load_state_dict(torch.load('weights/model_dagger_20210819_154210_1901.pth'))
     # model = MyModel(dev).to(dev)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     loss_function = nn.MSELoss()

@@ -12,7 +12,7 @@ import csv
 from std_msgs.msg import Float64MultiArray
 torch.manual_seed(1)
 import rospy
-from math import sin,cos
+from math import sin,cos,exp
 import time
 import random
 
@@ -50,7 +50,7 @@ class ENV:
         l1 = 0.5
         l2 = 0.4
         R_S = 0.2
-        R_quad = (l2/8+R_S)*(l2/8+R_S)-0.001
+        R_quad = (l2/8+R_S)*(l2/8+R_S)-0.01
         s1 = sin(theta_1)
         c1 = cos(theta_1)
         s12 = sin(theta_1+theta_2)
@@ -133,11 +133,14 @@ def train(dev, model, x_train, y_train, optimizer, log_interval, loss_function):
         optimizer.zero_grad()
         y_pred = model(seq_data)
         single_loss = loss_function(y_pred, seq_label)
+        # single_loss = 1-exp(-single_loss.item())
         runLoss += single_loss.item()
+        # single_loss = torch.tensor(single_loss, dtype=torch.float32, requires_grad=True).to(dev)
         single_loss.backward()
         optimizer.step()
         if b % log_interval == 0:
             record_loss = single_loss.item()
+            # record_loss = 1-exp(-single_loss)
             print ('Train epoch [{}/{}] loss: {:.6f}'.format(b, len(x_train), record_loss))
 
     return runLoss
@@ -147,7 +150,7 @@ if __name__ == '__main__':
     env = ENV()
     model_dir = get_model_dir()
     run_name = model_dir.split('/')[1]
-    episodes = 10000
+    episodes = 2000
     n_batch = 100
     dev = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # model = '/weights/model_write_and_train_20210812_124157_182.pth'
