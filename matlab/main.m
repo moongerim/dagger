@@ -4,7 +4,7 @@ close all
 iter = 1;
 % cd '/home/robot/workspaces/dagger/src/Dagger/Network_log/20210716_173142' 
 divider = 1
-for i=1:34
+for i=1:19
     filename = sprintf('%i.mat',i);
     load(filename);
     temp = loss;
